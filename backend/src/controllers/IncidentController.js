@@ -1,5 +1,13 @@
 const connection  = require('../database/connection')
 
+
+async function getOngById(id) {
+  return await connection('ongs')
+      .select('*')
+      .where({ 'id': id })
+      .first();
+};
+
 module.exports = {
   async index(request, response){
     const{page = 1} = request.query;
@@ -28,15 +36,20 @@ module.exports = {
     const { title, description, value } = request.body
     const ong_id = request.headers.authorization
 
-    const [id] = await connection('incidents').insert({
-      title,
-      description,
-      value,
-      ong_id
-    })
+    const ong = await getOngById(ong_id)
 
-    response.json({ id })
+   if(!ong) {
+      return response.status(404).json({ message: 'Ong not found, please try again with other login' })
+   }
     
+   const [id] = await connection('incidents').insert({
+    title,
+    description,
+    value,
+    ong_id
+  })
+
+  return response.json({ id })
   },
 
   async delete(request, response){
@@ -50,6 +63,12 @@ module.exports = {
 
       if(incident.ong_id !== ong_id){
         return response.status(401).json({ error: 'Operation not permited'})
+      }
+
+      const ong = await getOngById(ong_id)
+
+      if(!ong) {
+          return response.status(404).json({ message: 'Ong not found, please try again with other login' })
       }
 
       await connection('incidents')

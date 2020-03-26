@@ -6,12 +6,12 @@ function generateRandomicId() {
 };
 
 async function getOngById(id) {
-
   return await connection('ongs')
       .select('*')
       .where({ 'id': id })
       .first();
 };
+
 module.exports = {
 
   async index(request, response) {
