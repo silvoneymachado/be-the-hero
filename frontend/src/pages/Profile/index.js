@@ -18,7 +18,7 @@ export default function Profile(){
     api.get('profile', headers).then(response => {
       setIncidents(response.data) 
     })
-  }, [ongId])
+  })
 
   if(!ongName) toLoginPage()
 
