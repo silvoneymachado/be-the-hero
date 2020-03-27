@@ -26,6 +26,6 @@
   },
   "javascript.updateImportsOnFileMove.enabled": "never",
   "breadcrumbs.enabled": true,
-  "editor.parameterHints.enabled": false,
+  "editor.parameterHints.enabled": true,
   "prettier-eslint": true,
 }
